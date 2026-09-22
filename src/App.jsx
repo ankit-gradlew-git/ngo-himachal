@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -11,6 +11,7 @@ import Awareness from './components/Awareness';
 import Gallery from './components/Gallery';
 import PressCoverage from './components/PressCoverage';
 import CommunityPresence from './components/CommunityPresence';
+import Donate from './components/Donate';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import Lightbox from './components/Lightbox';
@@ -149,6 +150,7 @@ export default function App() {
             <Gallery onSelectImage={handleSelectGalleryImage} />
             <PressCoverage onOpenImage={handleOpenSingleImage} />
             <CommunityPresence onOpenImage={handleOpenSingleImage} />
+            <Donate />
             <Contact />
           </>
         )}

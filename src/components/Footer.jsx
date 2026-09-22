@@ -85,6 +85,16 @@ export default function Footer({ onNavigate }) {
               </li>
               <li>
                 <a
+                  href="#donate"
+                  onClick={(e) => handleAnchorClick(e, 'donate')}
+                  className="inline-flex items-center gap-1.5 text-amber-300 hover:text-white font-semibold transition-colors"
+                >
+                  <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400 shrink-0" />
+                  <span>Donate via UPI (Smart QR)</span>
+                </a>
+              </li>
+              <li>
+                <a
                   href="/csr-verification"
                   onClick={handleCSRClick}
                   className="inline-flex items-center gap-1.5 text-amber-300 hover:text-white font-semibold transition-colors pt-1 border-t border-[#1b5e41] w-full"

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Phone, Mail, MapPin, Menu, X, Shield, ExternalLink } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Phone, Mail, MapPin, Menu, X, Shield, Heart } from 'lucide-react';
 import { ngoInfo } from '../data/ngoData';
 
 export default function Navbar({ currentPath = '/', onNavigate }) {
@@ -20,6 +20,7 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
     { label: 'Our Work', href: '#initiatives' },
     { label: 'Gallery', href: '#gallery' },
     { label: 'Press', href: '#press' },
+    { label: 'Donate', href: '#donate' },
   ];
 
   const handleLinkClick = (e, href) => {
@@ -45,6 +46,20 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
       onNavigate('/csr-verification');
     } else {
       window.location.href = '/csr-verification';
+    }
+  };
+
+  const handleDonateClick = (e) => {
+    if (currentPath === '/csr-verification') {
+      e.preventDefault();
+      setMobileMenuOpen(false);
+      if (onNavigate) {
+        onNavigate('/', 'donate');
+      } else {
+        window.location.href = '/#donate';
+      }
+    } else {
+      setMobileMenuOpen(false);
     }
   };
 
@@ -147,8 +162,17 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
               ))}
             </div>
 
-            {/* Distinct Action Cluster: CSR Verification Badge + Contact Us Button */}
+            {/* Distinct Action Cluster: Donate + CSR Verification Badge + Contact Us Button */}
             <div className="flex items-center gap-2.5 pl-3 border-l border-stone-200">
+              <a
+                href="#donate"
+                onClick={handleDonateClick}
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-md bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100 active:scale-95 transition-all whitespace-nowrap shadow-2xs cursor-pointer"
+              >
+                <Heart className="w-3.5 h-3.5 text-rose-600 fill-rose-600" />
+                <span>Donate via UPI</span>
+              </a>
+
               <a
                 href="/csr-verification"
                 onClick={handleCSRClick}
@@ -197,6 +221,18 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
                   {link.label}
                 </a>
               ))}
+
+              {/* Mobile Donate via UPI Button */}
+              <div className="pt-2">
+                <a
+                  href="#donate"
+                  onClick={handleDonateClick}
+                  className="flex items-center justify-center gap-2 px-3 py-2.5 text-base font-bold rounded-md bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100 transition-colors"
+                >
+                  <Heart className="w-4 h-4 text-rose-600 fill-rose-600" />
+                  <span>Donate via UPI</span>
+                </a>
+              </div>
 
               {/* Mobile CSR Verification */}
               <div className="pt-2">

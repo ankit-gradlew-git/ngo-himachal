@@ -1,8 +1,29 @@
-import React from 'react';
-import { ArrowRight, Image as ImageIcon, MapPin, CheckCircle2, HeartHandshake } from 'lucide-react';
+import { useState } from 'react';
+import {
+  ArrowRight,
+  Image as ImageIcon,
+  MapPin,
+  CheckCircle2,
+  HeartHandshake,
+  Heart,
+  QrCode,
+  Copy,
+  Check
+} from 'lucide-react';
 import { ngoInfo } from '../data/ngoData';
+import { donationConfig, copyTextToClipboard } from '../data/donationConfig';
 
 export default function Hero() {
+  const [heroCopied, setHeroCopied] = useState(false);
+
+  const handleCopyHeroUpi = async () => {
+    const success = await copyTextToClipboard(donationConfig.upiId);
+    if (success) {
+      setHeroCopied(true);
+      setTimeout(() => setHeroCopied(false), 2500);
+    }
+  };
+
   return (
     <section id="hero" className="relative bg-gradient-to-b from-[#F4EFE6] via-[#FAF7F2] to-[#FDFBF7] pt-8 pb-16 lg:pt-14 lg:pb-24 border-b border-stone-200 overflow-hidden">
       {/* Decorative mountain-inspired subtle background pattern */}
@@ -58,8 +79,16 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Solid CTA Buttons */}
-            <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5">
+            {/* Solid CTA Buttons with Prominent Donate via UPI */}
+            <div className="mt-8 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <a
+                href="#donate"
+                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-bold text-white bg-amber-600 hover:bg-amber-700 active:bg-amber-800 rounded-md shadow-md hover:shadow-lg transition-all cursor-pointer"
+              >
+                <Heart className="w-4 h-4 fill-white" />
+                <span>Donate via UPI</span>
+              </a>
+
               <a
                 href="#activities"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-bold text-white bg-[#16422e] hover:bg-[#103424] active:bg-[#0a1f16] rounded-md shadow-md hover:shadow-lg transition-all"
@@ -67,14 +96,69 @@ export default function Hero() {
                 <span>Explore Our Work</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
+
               <a
                 href="#gallery"
                 className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-base font-bold text-stone-800 bg-white hover:bg-stone-50 border-2 border-stone-300 hover:border-stone-400 active:bg-stone-100 rounded-md shadow-xs transition-all"
               >
                 <ImageIcon className="w-4 h-4 text-emerald-800" />
-                <span>View Photo Gallery</span>
+                <span>View Gallery</span>
               </a>
             </div>
+
+            {/* Quick Hero UPI Banner: Instant UPI ID & Direct QR link */}
+            <div className="mt-5 p-3 sm:p-3.5 rounded-xl bg-amber-50/90 border border-amber-200/90 flex flex-wrap items-center justify-between gap-3 shadow-2xs max-w-xl">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <span className="p-1.5 rounded-md bg-amber-600 text-white shrink-0">
+                  <QrCode className="w-4 h-4" />
+                </span>
+                <div className="min-w-0">
+                  <div className="text-[11px] font-bold uppercase tracking-wider text-amber-950 flex items-center gap-1.5">
+                    <span>Direct UPI Support</span>
+                    <span className="text-[10px] font-semibold text-emerald-800 bg-emerald-100 px-1.5 py-0.2 rounded border border-emerald-200">
+                      Kotak Bank VPA
+                    </span>
+                  </div>
+                  <div className="text-xs sm:text-sm font-mono font-bold text-stone-900 truncate">
+                    {donationConfig.upiId}
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 ml-auto sm:ml-0">
+                <button
+                  type="button"
+                  onClick={handleCopyHeroUpi}
+                  className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-xs font-bold transition-all shadow-2xs cursor-pointer active:scale-95 ${
+                    heroCopied
+                      ? 'bg-emerald-700 text-white'
+                      : 'bg-white hover:bg-amber-100 text-stone-800 border border-amber-300'
+                  }`}
+                  aria-label="Copy organization UPI ID"
+                >
+                  {heroCopied ? (
+                    <>
+                      <Check className="w-3.5 h-3.5 text-emerald-200" />
+                      <span>Copied!</span>
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="w-3.5 h-3.5 text-amber-800" />
+                      <span>Copy ID</span>
+                    </>
+                  )}
+                </button>
+
+                <a
+                  href="#donate"
+                  className="inline-flex items-center gap-1 px-3 py-1.5 rounded-md text-xs font-bold bg-[#16422e] text-white hover:bg-[#103424] transition-colors whitespace-nowrap shadow-2xs"
+                >
+                  <span>Scan QR</span>
+                  <ArrowRight className="w-3 h-3" />
+                </a>
+              </div>
+            </div>
+
           </div>
 
           {/* Right Image Column with real NGO photo */}

@@ -90,7 +90,7 @@ export default function Footer({ onNavigate }) {
                   className="inline-flex items-center gap-1.5 text-amber-300 hover:text-white font-semibold transition-colors"
                 >
                   <Heart className="w-3.5 h-3.5 text-rose-400 fill-rose-400 shrink-0" />
-                  <span>Donate via UPI (Smart QR)</span>
+                  <span>Support &amp; Donate (Bank Details)</span>
                 </a>
               </li>
               <li>

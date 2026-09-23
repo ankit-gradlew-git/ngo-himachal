@@ -4,10 +4,12 @@ import {
   QrCode,
   Copy,
   Check,
-  Smartphone,
+  Building2,
   ShieldCheck,
   CheckCircle2,
-  Wallet
+  Clock,
+  Sparkles,
+  Info
 } from 'lucide-react';
 import SectionHeading from './SectionHeading';
 import {
@@ -16,17 +18,18 @@ import {
 } from '../data/donationConfig';
 
 export default function Donate() {
-  const [copied, setCopied] = useState(false);
+  const [copiedField, setCopiedField] = useState(null);
+  const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
 
-  // Handle Copy UPI ID
-  const handleCopyUpiId = useCallback(async () => {
-    const success = await copyTextToClipboard(donationConfig.upiId);
+  const handleCopy = useCallback(async (text, label) => {
+    const success = await copyTextToClipboard(text);
     if (success) {
-      setCopied(true);
+      setCopiedField(label);
+      setToastMessage(`${label} copied: ${text}`);
       setShowToast(true);
 
-      setTimeout(() => setCopied(false), 2500);
+      setTimeout(() => setCopiedField(null), 2500);
       setTimeout(() => setShowToast(false), 3000);
     }
   }, []);
@@ -38,12 +41,12 @@ export default function Donate() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <SectionHeading
-          badge="Direct Grassroots Impact"
-          title="Support via UPI QR Code"
-          subtitle="Direct contribution to Aarushi Gramin Sansthan for rural healthcare camps, cutting & tailoring training for women, and school renovation in Himachal Pradesh."
+          badge="Direct Grassroots Contribution"
+          title="Support Arushi Gramin Sansthan"
+          subtitle="Direct contribution to official organization account for rural health camps, cutting & tailoring vocational training for women, and school renovation in Himachal Pradesh."
         />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 mt-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 mt-12 items-start">
           
           {/* LEFT COLUMN: Impact Narrative & Transparency */}
           <div className="lg:col-span-6 space-y-6">
@@ -52,7 +55,7 @@ export default function Donate() {
                 <span className="p-1 rounded bg-emerald-100 text-[#16422e]">
                   <Heart className="w-3.5 h-3.5 fill-[#16422e]" />
                 </span>
-                <span>Transparent Grassroots Support</span>
+                <span>Direct Bank Transfer Support</span>
               </div>
 
               <h3 className="text-xl sm:text-2xl font-bold text-stone-900 font-serif leading-snug">
@@ -60,7 +63,7 @@ export default function Donate() {
               </h3>
 
               <p className="mt-3 text-sm sm:text-base text-stone-600 leading-relaxed">
-                Aarushi Gramin Sansthan is an active registered society (Reg. No. <strong>39/2003</strong>) based in Rajgarh, Distt. Sirmour (H.P.). All contributions directly fund on-the-ground public welfare without any intermediary cuts.
+                <strong>Arushi Gramin Sansthan</strong> is an active registered welfare society (Registration No. <strong>{donationConfig.regNo}</strong>) based in Rajgarh, Distt. Sirmour (H.P.). All contributions directly support on-the-ground public health screenings, vocational training, and rural education programs.
               </p>
 
               {/* Concrete Impact Pillars */}
@@ -69,15 +72,15 @@ export default function Donate() {
                   <CheckCircle2 className="w-5 h-5 text-[#16422e] shrink-0 mt-0.5" />
                   <div>
                     <h4 className="text-xs sm:text-sm font-bold text-stone-900">Health Checkup Camps</h4>
-                    <p className="text-xs text-stone-600 mt-0.5">Free diagnostic screenings, doctor visits, and medicines.</p>
+                    <p className="text-xs text-stone-600 mt-0.5">Free diagnostic screenings, medical consultations, and medicines.</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3 p-3 rounded-xl bg-stone-50 border border-stone-200/70">
                   <CheckCircle2 className="w-5 h-5 text-[#16422e] shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-stone-900">Women Vocational Training</h4>
-                    <p className="text-xs text-stone-600 mt-0.5">Structured cutting and tailoring courses for self-reliance.</p>
+                    <h4 className="text-xs sm:text-sm font-bold text-stone-900">Women Vocational Centers</h4>
+                    <p className="text-xs text-stone-600 mt-0.5">Structured cutting and tailoring courses for rural women.</p>
                   </div>
                 </div>
 
@@ -85,136 +88,219 @@ export default function Donate() {
                   <CheckCircle2 className="w-5 h-5 text-[#16422e] shrink-0 mt-0.5" />
                   <div>
                     <h4 className="text-xs sm:text-sm font-bold text-stone-900">School Restorations</h4>
-                    <p className="text-xs text-stone-600 mt-0.5">Classroom repairs, paintwork, and community facilities.</p>
+                    <p className="text-xs text-stone-600 mt-0.5">Revitalizing rural primary schools and community shelters.</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3 p-3 rounded-xl bg-stone-50 border border-stone-200/70">
                   <CheckCircle2 className="w-5 h-5 text-[#16422e] shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="text-xs sm:text-sm font-bold text-stone-900">Direct Society Account</h4>
-                    <p className="text-xs text-stone-600 mt-0.5">Official Kotak Mahindra Bank VPA with full accountability.</p>
+                    <h4 className="text-xs sm:text-sm font-bold text-stone-900">Official SBI Account</h4>
+                    <p className="text-xs text-stone-600 mt-0.5">Direct State Bank of India account without third-party commissions.</p>
                   </div>
                 </div>
               </div>
 
-              {/* Simple Step Guide */}
+              {/* Transfer Guide */}
               <div className="mt-6 pt-5 border-t border-stone-100 bg-[#FDFBF7] p-4 rounded-xl border border-stone-200/80">
-                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-800 mb-2">
-                  How to Donate in 2 Simple Steps:
+                <h4 className="text-xs font-bold uppercase tracking-wider text-stone-800 mb-2 flex items-center gap-1.5">
+                  <Info className="w-4 h-4 text-emerald-800" />
+                  <span>How to Transfer via Net Banking / Banking Apps:</span>
                 </h4>
                 <ol className="text-xs text-stone-600 space-y-1.5 list-decimal list-inside leading-relaxed">
-                  <li>Open any UPI app (Google Pay, PhonePe, Paytm, BHIM) on your mobile.</li>
-                  <li>Scan the QR code shown here or enter the copied UPI ID (<strong>{donationConfig.upiId}</strong>) to contribute any amount.</li>
+                  <li>Open your preferred banking app (SBI YONO, HDFC, ICICI, etc.) or any UPI app.</li>
+                  <li>Select <strong>To Bank Account</strong> (IMPS / NEFT / RTGS) and paste the Account Number &amp; IFSC Code provided on the right.</li>
+                  <li>Enter the beneficiary name as <strong>Arushi Gramin Sansthan</strong> and complete your contribution.</li>
                 </ol>
               </div>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Official QR Code & UPI ID Card */}
+          {/* RIGHT COLUMN: Official State Bank of India Account Card */}
           <div className="lg:col-span-6">
-            <div className="bg-white rounded-2xl p-6 sm:p-8 border-2 border-stone-300 shadow-xl relative overflow-hidden max-w-md mx-auto">
+            <div className="bg-white rounded-2xl p-6 sm:p-8 border-2 border-stone-300 shadow-xl relative overflow-hidden max-w-lg mx-auto">
               
               {/* Card Header */}
               <div className="flex items-center justify-between gap-2 pb-4 border-b border-stone-200">
                 <div className="flex items-center gap-2.5">
-                  <div className="w-9 h-9 rounded-lg bg-[#16422e] text-white flex items-center justify-center font-bold text-sm shadow-xs">
-                    <Wallet className="w-5 h-5 text-amber-300" />
+                  <div className="w-10 h-10 rounded-lg bg-[#103424] text-white flex items-center justify-center font-bold text-sm shadow-xs">
+                    <Building2 className="w-5 h-5 text-amber-300" />
                   </div>
                   <div>
                     <h3 className="text-base font-bold text-stone-900 font-serif leading-tight">
-                      Official UPI Donation
+                      Official Bank Account Details
                     </h3>
-                    <p className="text-[11px] text-emerald-800 font-semibold">
-                      Kotak Mahindra Bank Verified
+                    <p className="text-xs text-emerald-800 font-semibold flex items-center gap-1">
+                      <span>{donationConfig.bankName}</span>
+                      <span>•</span>
+                      <span>Rajgarh Branch</span>
                     </p>
                   </div>
                 </div>
 
                 <div className="inline-flex items-center gap-1 text-[11px] font-bold text-[#16422e] bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200">
                   <ShieldCheck className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>0% Commission</span>
+                  <span>Verified NGO A/C</span>
                 </div>
               </div>
 
-              {/* The Official QR Code */}
-              <div className="my-6 flex flex-col items-center justify-center text-center">
-                <div className="relative p-3.5 bg-white rounded-2xl border-2 border-dashed border-stone-300 shadow-sm hover:border-[#16422e] transition-colors">
-                  <img
-                    src={donationConfig.qrImagePath}
-                    alt="Aarushi Gramin Sansthan Official Kotak Bank UPI QR Code"
-                    className="w-60 h-60 sm:w-64 sm:h-64 object-contain rounded-lg"
-                    loading="eager"
-                  />
-                  
-                  {/* Badge under QR */}
-                  <div className="mt-2.5 flex items-center justify-center gap-1.5 text-xs font-bold text-stone-800 bg-stone-50 py-1.5 px-3 rounded-md border border-stone-200">
-                    <QrCode className="w-4 h-4 text-[#16422e]" />
-                    <span>Scan with Any UPI App</span>
+              {/* Bank Details Key-Value Rows with One-Click Copy Buttons */}
+              <div className="mt-6 space-y-3.5">
+                
+                {/* 1. Account Name */}
+                <div className="bg-[#FAF7F2] p-3.5 rounded-xl border border-stone-300 flex items-center justify-between gap-3 shadow-2xs">
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[10px] uppercase font-bold text-stone-500 tracking-wider">
+                      Account Beneficiary Name
+                    </div>
+                    <div className="text-sm sm:text-base font-bold text-stone-900 font-serif truncate mt-0.5">
+                      {donationConfig.accountName}
+                    </div>
                   </div>
-                </div>
-
-                {/* Organization Payee Name */}
-                <div className="mt-3 text-center">
-                  <div className="text-base font-bold text-stone-900 font-serif">
-                    {donationConfig.payeeName}
-                  </div>
-                  <div className="text-xs text-stone-500 mt-0.5">
-                    Reg. Society No: {donationConfig.bankDetails.regNo}
-                  </div>
-                </div>
-              </div>
-
-              {/* Prominent UPI ID & One-Click Copy */}
-              <div className="space-y-2">
-                <div className="flex items-center justify-between text-[11px] font-bold text-stone-700 uppercase tracking-wider px-1">
-                  <span>Official UPI ID (VPA)</span>
-                  <span className="text-emerald-800 font-semibold lowercase">tap copy to use in any app</span>
-                </div>
-
-                <div className="bg-[#FAF7F2] p-3 rounded-xl border border-stone-300 flex items-center justify-between gap-2 shadow-2xs">
-                  <code className="text-xs sm:text-sm font-mono font-bold text-stone-900 select-all truncate pl-1">
-                    {donationConfig.upiId}
-                  </code>
 
                   <button
                     type="button"
-                    onClick={handleCopyUpiId}
-                    className={`inline-flex items-center gap-1.5 px-4 py-2.5 rounded-lg text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer active:scale-95 ${
-                      copied
-                        ? 'bg-emerald-700 text-white border border-emerald-700'
-                        : 'bg-[#16422e] hover:bg-[#103424] text-white border border-[#103424]'
+                    onClick={() => handleCopy(donationConfig.accountName, 'Account Name')}
+                    className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-all shadow-2xs shrink-0 cursor-pointer active:scale-95 ${
+                      copiedField === 'Account Name'
+                        ? 'bg-emerald-700 text-white'
+                        : 'bg-white hover:bg-stone-100 text-stone-800 border border-stone-300'
                     }`}
-                    aria-label="Copy organization UPI ID to clipboard"
+                    aria-label="Copy Account Beneficiary Name"
                   >
-                    {copied ? (
+                    {copiedField === 'Account Name' ? (
                       <>
-                        <Check className="w-4 h-4 text-emerald-300" />
-                        <span>Copied!</span>
+                        <Check className="w-3.5 h-3.5 text-emerald-200" />
+                        <span>Copied</span>
                       </>
                     ) : (
                       <>
-                        <Copy className="w-4 h-4 text-amber-300" />
-                        <span>Copy UPI ID</span>
+                        <Copy className="w-3.5 h-3.5 text-stone-600" />
+                        <span>Copy</span>
                       </>
                     )}
                   </button>
                 </div>
+
+                {/* 2. Bank Name */}
+                <div className="bg-[#FAF7F2] p-3.5 rounded-xl border border-stone-300 flex items-center justify-between gap-3 shadow-2xs">
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[10px] uppercase font-bold text-stone-500 tracking-wider">
+                      Bank Name &amp; Branch
+                    </div>
+                    <div className="text-sm sm:text-base font-bold text-stone-900 mt-0.5">
+                      {donationConfig.bankName}
+                    </div>
+                    <div className="text-xs text-stone-500">
+                      {donationConfig.branch}
+                    </div>
+                  </div>
+                </div>
+
+                {/* 3. Account Number */}
+                <div className="bg-[#FAF7F2] p-3.5 rounded-xl border-2 border-emerald-800/40 bg-emerald-50/20 flex items-center justify-between gap-3 shadow-2xs">
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[10px] uppercase font-bold text-emerald-900 tracking-wider flex items-center gap-1.5">
+                      <span>Account Number (A/C No)</span>
+                      <span className="text-[9px] bg-emerald-100 text-emerald-900 px-1.5 py-0.2 rounded font-semibold">Primary</span>
+                    </div>
+                    <div className="text-base sm:text-lg font-mono font-extrabold text-stone-900 tracking-wider mt-0.5">
+                      {donationConfig.accountNumber}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(donationConfig.accountNumber, 'Account Number')}
+                    className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer active:scale-95 ${
+                      copiedField === 'Account Number'
+                        ? 'bg-emerald-700 text-white border border-emerald-700'
+                        : 'bg-[#16422e] hover:bg-[#103424] text-white border border-[#103424]'
+                    }`}
+                    aria-label="Copy Bank Account Number"
+                  >
+                    {copiedField === 'Account Number' ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-emerald-200" />
+                        <span>Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5 text-amber-300" />
+                        <span>Copy A/C No</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
+                {/* 4. IFSC Code */}
+                <div className="bg-[#FAF7F2] p-3.5 rounded-xl border-2 border-emerald-800/40 bg-emerald-50/20 flex items-center justify-between gap-3 shadow-2xs">
+                  <div className="min-w-0 flex-1">
+                    <div className="text-[10px] uppercase font-bold text-emerald-900 tracking-wider flex items-center gap-1.5">
+                      <span>IFSC Code</span>
+                      <span className="text-[9px] bg-emerald-100 text-emerald-900 px-1.5 py-0.2 rounded font-semibold">RTGS / NEFT / IMPS</span>
+                    </div>
+                    <div className="text-base sm:text-lg font-mono font-extrabold text-stone-900 tracking-wider mt-0.5">
+                      {donationConfig.ifscCode}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleCopy(donationConfig.ifscCode, 'IFSC Code')}
+                    className={`inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-bold transition-all shadow-xs shrink-0 cursor-pointer active:scale-95 ${
+                      copiedField === 'IFSC Code'
+                        ? 'bg-emerald-700 text-white border border-emerald-700'
+                        : 'bg-[#16422e] hover:bg-[#103424] text-white border border-[#103424]'
+                    }`}
+                    aria-label="Copy IFSC Code"
+                  >
+                    {copiedField === 'IFSC Code' ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-emerald-200" />
+                        <span>Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5 text-amber-300" />
+                        <span>Copy IFSC</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+
               </div>
 
-              {/* Supported Apps Section */}
-              <div className="mt-6 pt-5 border-t border-stone-200">
+              {/* QR Code Placeholder Banner (Updating Soon) */}
+              <div className="mt-6 p-4 rounded-xl border-2 border-dashed border-stone-300 bg-stone-50/80 text-center relative overflow-hidden">
+                <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-900 flex items-center justify-center mx-auto mb-2.5 border border-amber-300">
+                  <QrCode className="w-6 h-6 text-amber-800" />
+                </div>
+                <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 text-[11px] font-bold uppercase tracking-wider mb-1.5 border border-amber-300">
+                  <Clock className="w-3 h-3 text-amber-800" />
+                  <span>Official SBI UPI QR Updating Soon</span>
+                </div>
+                <p className="text-xs text-stone-600 max-w-sm mx-auto leading-relaxed">
+                  The official State Bank of India QR code for Arushi Gramin Sansthan is currently being processed by the bank. Please use the direct SBI Account Number and IFSC code above for your contributions.
+                </p>
+                <div className="mt-2 text-[11px] font-mono text-stone-600">
+                  UPI ID (Placeholder): <span className="font-semibold text-stone-700">{donationConfig.upiId}</span>
+                </div>
+              </div>
+
+              {/* Supported Modes Badges */}
+              <div className="mt-5 pt-4 border-t border-stone-200">
                 <div className="text-[11px] font-bold text-stone-600 uppercase tracking-wider text-center mb-2.5">
-                  Supported UPI Applications
+                  Supported Payment Methods
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                  {donationConfig.supportedApps.map((app) => (
+                  {donationConfig.supportedModes.map((mode) => (
                     <div
-                      key={app.name}
-                      className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg border text-xs font-semibold text-center ${app.badgeBg}`}
+                      key={mode.name}
+                      className={`flex items-center justify-center gap-1 py-1.5 px-2 rounded-lg border text-xs font-semibold text-center ${mode.badge}`}
                     >
-                      <Smartphone className="w-3.5 h-3.5 opacity-70" />
-                      <span>{app.name}</span>
+                      <Sparkles className="w-3 h-3 opacity-70" />
+                      <span>{mode.name}</span>
                     </div>
                   ))}
                 </div>
@@ -224,10 +310,10 @@ export default function Donate() {
               <div className="mt-5 p-3 rounded-xl bg-[#F9F6F0] border border-stone-200 text-center">
                 <div className="flex items-center justify-center gap-1.5 text-xs text-stone-700 font-medium">
                   <ShieldCheck className="w-4 h-4 text-[#16422e]" />
-                  <span>Direct Transfer to Kotak Mahindra Bank</span>
+                  <span>Arushi Gramin Sansthan • Society Reg No: {donationConfig.regNo}</span>
                 </div>
                 <div className="text-[11px] text-stone-500 mt-0.5">
-                  No third-party payment gateway or processing charge.
+                  Direct transfer to organization’s State Bank of India account.
                 </div>
               </div>
 
@@ -248,9 +334,9 @@ export default function Donate() {
             <Check className="w-4 h-4 text-amber-300" />
           </div>
           <div>
-            <div className="text-xs font-bold text-white">UPI ID Copied to Clipboard!</div>
+            <div className="text-xs font-bold text-white">Copied to Clipboard!</div>
             <div className="text-[11px] text-emerald-200 font-mono mt-0.5">
-              {donationConfig.upiId}
+              {toastMessage}
             </div>
           </div>
         </div>

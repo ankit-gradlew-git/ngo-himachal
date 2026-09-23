@@ -170,7 +170,7 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold rounded-md bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100 active:scale-95 transition-all whitespace-nowrap shadow-2xs cursor-pointer"
               >
                 <Heart className="w-3.5 h-3.5 text-rose-600 fill-rose-600" />
-                <span>Donate via UPI</span>
+                <span>Donate</span>
               </a>
 
               <a
@@ -230,7 +230,7 @@ export default function Navbar({ currentPath = '/', onNavigate }) {
                   className="flex items-center justify-center gap-2 px-3 py-2.5 text-base font-bold rounded-md bg-amber-50 text-amber-900 border border-amber-300 hover:bg-amber-100 transition-colors"
                 >
                   <Heart className="w-4 h-4 text-rose-600 fill-rose-600" />
-                  <span>Donate via UPI</span>
+                  <span>Donate to Organization</span>
                 </a>
               </div>
 
